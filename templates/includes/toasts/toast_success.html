@@ -1,0 +1,65 @@
+<div aria-live="polite" aria-atomic="true" style="position: relative; min-height: 200px;">
+    <div style="position: absolute; top: 0; right: 0;z-index:999;">
+        <div class="toast border-top-0 mr-0" data-autohide="false">
+            <div class="arrow-up arrow-success"></div>
+            <div class="w-100 toast-capper bg-success"></div>
+            <div class="toast-header text-dark alert alert-success" style="background-color:rgb(126, 196, 126);" >
+                <img src="{{ MEDIA_URL }}Greek_lc_alpha.svg.png" class="rounded" alt="Greek_lc_alpha" style="height:30px;width:30px;">
+                <strong class="mr-3">Success!</strong>
+                <button type="button" class="mr-1 close text-dark" data-dismiss="toast" id="success_toast_btt" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="toast-body bg-white" >
+                <div class="row">
+                    <div class="col" id="success_toast_container">
+                        {{ message }}
+                        <hr class="mt-3 mb-3" style="background-color:rgb(149, 187, 149);height:4px;">
+                    </div>
+                </div>
+                {% if grand_total and not on_profile_page or on_ratings_page or on_feedback_page %}
+                <p class="logo-font bg-white text-black py-1">Your Bag ({{ product_count }})</p>
+                <div class="bag-notification-wrapper">
+                    {% for item in bag_items %}
+                        <div class="row">
+                            <div class="col-3 my-1">
+                                {% if item.product.image %}
+                                <img class="w-100" src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                                {% else %}
+                                <img class="w-100" src="{{ MEDIA_URL }}noimage.png" alt="{{ item.product.name }}">
+                                {% endif %}
+                            </div>
+                            <div class="col-9">
+                                <p class="my-0"><strong>{{ item.product.name }}</strong></p>
+                                {% if item.product.pencil_softness %}<p class="my-0 small">Softness: {{ item.size|upper }}</p>{% endif %}
+                                {% if item.product.folder_sizes %}<p class="my-0 small">Size: {{ item.size|upper }}</p>{% endif %}
+                                {% if item.product.lunch_box %}<p class="my-0 small">Size: {{ item.size|upper }}</p>{% endif %}
+                                {% if item.product.pencil_case %}<p class="my-0 small">Size: {{ item.size|upper }}</p>{% endif %}
+                                {% if item.product.copies %}<p class="my-0 small">Size: {{ item.size|upper }}</p>{% endif %}
+                                <p class="my-0 small text-muted">Qty: {{ item.quantity }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <strong><p class="mt-3 mb-1 text-black">
+                            Total{% if free_delivery_delta > 0 %} (Exc. delivery){% endif %}: 
+                            <span class="float-right">€{{ total|floatformat:2 }}</span>
+                        </p></strong>
+                        {% if free_delivery_delta > 0 %}
+                            <p class="mb-0 p-2 shadow-sm text-black text-center"style="background-color:rgb(236, 197, 139);">
+                                Spend <strong>€{{ free_delivery_delta }}</strong> more for free delivery!
+                            </p>
+                        {% endif %}
+                        <a href="{% url 'view_bag' %}" class="btn btn-black btn-block border mt-2" style="background-color: rgb(236, 197, 139);">
+                            <span class="text-uppercase">Go To Secure Checkout</span>
+                            <span class="icon">
+                                <i class="fa-regular fa-credit-card m-1"></i>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+            </div>
+        </div>
